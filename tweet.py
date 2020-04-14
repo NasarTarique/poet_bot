@@ -10,21 +10,23 @@ api = tweepy.API(auth)
 
 poem = get_poem.get_poem()
 
-str = poem['poem_title'] +'\n'+'\n'+'by'+poem['author_name'] +'\n' +'\n'
+str = poem['poem_title'] +'\n'+'\n'+'by '+poem['author_name'] +'\n' +'\n'
 count_chars = len(poem['poem_title']) + len(poem['author_name'])+ 6
 poemparts = []
 list = poem['poem'].splitlines()
 for x in list:
-    if x==list[len(list)-1]:
+    if (len(x)+1+count_chars)<140:
         str = str+'\n'+x
-        poemparts.append(str)
-    if (len(x)+count_chars)<140:
-        str = str+'\n'+x
-        count_chars = count_chars+len(x)
+        count_chars = count_chars+len(x)+1
+        if x==list[len(list)-1]:
+            poemparts.append(str)
     else:
         poemparts.append(str)
-        str=''
-        count_chars=0
+        str = ""
+        str = str + '\n' + x
+        count_chars=len(str)
+        if x==list[len(list)-1]:
+            poemparts.append(str)
 
 
 if len(poemparts)==1:
